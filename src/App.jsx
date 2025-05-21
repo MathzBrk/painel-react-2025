@@ -5,11 +5,14 @@ import './App.css'
 function App() {
 
   const [personagens, setPersonagens] = useState([]);
-  const [personagem, setPersonagemId] = useState(undefined);
-  const [informacoesPersonagem, setInformacoesPersonagem] = useState({});
+  const [personagemSelecionado, setPersonagemSelecionado] = useState(null);
+  const [exibirPrincipais, setExibirPrincipais] = useState(false);
+
+  const nomesPersonagensPrincipais = ['naruto', 'sasuke', 'kakashi', 'sakura', 'shikamaru'];
+
 
   useEffect(() => {
-    if (!personagem) {
+    if (!personagemSelecionado) {
       axios.get(`https://naruto-br-api.site/characters`)
         .then(response => {
           console.log(response)
@@ -22,38 +25,47 @@ function App() {
             poder: dadosPersonagem.power,
             jutsuPrincipal: dadosPersonagem.jutsus?.[0]?.name || 'Jutsu desconhecido'
           }))
-            .slice(0, 10);
 
           setPersonagens(dadosPersonagens);
-          setInformacoesPersonagem([]);
           console.log(dadosPersonagens)
         })
-    } else {
-      axios.get(`https://naruto-br-api.site/characters/${personagem}`)
-        .then(response => {
-          setInformacoesPersonagem({
-            nome: response.data.name,
-            imagem: response.data.profile_image,
-            sumario: response.data.summary
-          })
-        })
-
-      console.log(personagem)
     }
-  }, [personagem])
+  }, [personagemSelecionado])
+
+  const handleSelecionarPersonagem = (id) => {
+    axios.get(`https://naruto-br-api.site/characters/${id}`)
+      .then(response => {
+        console.log(response)
+        setPersonagemSelecionado({
+          nome: response.data.name,
+          imagem: response.data.profile_image,
+          sumario: response.data.summary
+        });
+      });
+  };
+
+  const personagensPrincipaisFiltrados = personagens.filter((personagem) => {
+    const primeiroNome = personagem.nome.split(' ').pop().toLowerCase();
+    return nomesPersonagensPrincipais.includes(primeiroNome)
+  })
+  console.log(personagensPrincipaisFiltrados)
 
 
   return (
     <div className="container mt-4">
       <h1 className="text-center mb-4">Personagens de Naruto</h1>
 
+      <button className="btn btn-primary" onClick={() => setExibirPrincipais(true)}>Mostrar Personagens Principais</button>
+      <button className="btn btn-secondary ms-2" onClick={() => setExibirPrincipais(false)}>Mostrar Todos</button>
+
       {/* Lista de Personagens */}
-      {!personagem && (
+      {!personagemSelecionado && (
         <div className="d-flex flex-row flex-nowrap gap-4 justify-content-start" style={{ overflowX: 'auto' }}>
-          {personagens.map((p) => (
+          {(exibirPrincipais ? personagensPrincipaisFiltrados : personagens).map((p) => (
             <div
+              key={p.id}
               className="p-3"
-              onClick={() => setPersonagemId(p.id)}
+              onClick={() => handleSelecionarPersonagem(p.id)}
               style={{
                 cursor: 'pointer',
                 border: '1px solid #ddd',
@@ -61,7 +73,6 @@ function App() {
                 minWidth: '250px',
                 maxWidth: '250px'
               }}
-              key={p.id}
             >
               <h5>{p.nome}</h5>
               <p><strong>Vila:</strong> {p.vila}</p>
@@ -73,13 +84,14 @@ function App() {
         </div>
       )}
 
-      {personagem && (
+
+      {personagemSelecionado && (
         <div className="card text-center">
-          <img src={informacoesPersonagem.imagem} className="card-img-top mx-auto" alt={personagem} style={{ width: '300px' }} />
+          <img src={personagemSelecionado.imagem} className="card-img-top mx-auto" alt={personagemSelecionado.nome} style={{ width: '300px' }} />
           <div className="card-body">
-            <h2>{informacoesPersonagem.nome}</h2>
-            <p>{informacoesPersonagem.sumario}</p>
-            <button className="btn btn-secondary mt-2" onClick={() => setPersonagemId(undefined)}>Voltar</button>
+            <h2>{personagemSelecionado.nome}</h2>
+            <p>{personagemSelecionado.sumario}</p>
+            <button className="btn btn-secondary mt-2" onClick={() => setPersonagemSelecionado(null)}>Voltar</button>
           </div>
         </div>
       )}
