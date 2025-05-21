@@ -10,7 +10,7 @@ function App() {
   const [filtrarFolha, setFiltrarFolha] = useState(false);
 
   // Lista dos nomes para filtrar personagens principais
-  const nomesPersonagensPrincipais = ['naruto', 'sasuke', 'kakashi', 'sakura', 'shikamaru'];
+  const nomesPersonagensPrincipais = ['naruto', 'sasuke', 'kakashi', 'sakura', 'shikamaru', 'gaara'];
 
   // Carrega os personagens ao abrir ou quando desmarca personagem selecionado
   useEffect(() => {
@@ -66,33 +66,34 @@ function App() {
     <div className="container mt-5">
       <h1 className="text-center mb-4 fw-bold">Personagens de Naruto</h1>
 
-      {/* Botões de filtro */}
-      <div className="mb-4 d-flex flex-wrap justify-content-center gap-3">
-        <button
-          className={`btn ${exibirPrincipais ? 'btn-primary' : 'btn-outline-primary'}`}
-          onClick={() => setExibirPrincipais(true)}
-        >
-          Mostrar Personagens Principais
-        </button>
-
-        <button
-          className={`btn ${!exibirPrincipais ? 'btn-secondary' : 'btn-outline-secondary'}`}
-          onClick={() => setExibirPrincipais(false)}
-        >
-          Mostrar Todos
-        </button>
-
-        <button
-          className={`btn ${filtrarFolha ? 'btn-outline-success' : 'btn-success'}`}
-          onClick={() => setFiltrarFolha(!filtrarFolha)}
-        >
-          {filtrarFolha ? "Mostrar Todas as Vilas" : "Mostrar apenas Vila da Folha"}
-        </button>
-      </div>
-
       {/* Lista de personagens */}
       {!personagemSelecionado && (
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+          {/* Botões de filtro */}
+          <div className="mb-4 d-flex flex-wrap justify-content-center p-3">
+            <button
+              className="btn btn-primary px-4 py-2 me-2 mb-2"
+              onClick={() => setExibirPrincipais(true)}
+            >
+              Mostrar Personagens Principais
+            </button>
+
+            <button
+              className="btn btn-secondary px-4 py-2 me-2 mb-2"
+              onClick={() => setExibirPrincipais(false)}
+            >
+              Mostrar Todos
+            </button>
+
+            <button
+              className={`btn px-4 py-2 me-2 mb-2 ${filtrarFolha ? 'btn-outline-success' : 'btn-success'}`}
+              onClick={() => setFiltrarFolha(!filtrarFolha)}
+            >
+              {filtrarFolha ? "Mostrar Todas as Vilas" : "Mostrar apenas Vila da Folha"}
+            </button>
+          </div>
+
+
           {personagensFiltrados.map((p) => (
             <div key={p.id} className="col">
               <div
