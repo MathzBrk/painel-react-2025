@@ -70,29 +70,30 @@ function App() {
       {!personagemSelecionado && (
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
           {/* Botões de filtro */}
-          <div className="mb-4 d-flex flex-wrap justify-content-center p-3">
-            <button
-              className="btn btn-primary px-4 py-2 me-2 mb-2"
-              onClick={() => setExibirPrincipais(true)}
-            >
-              Mostrar Personagens Principais
-            </button>
+          <div className="mb-4 d-flex flex-wrap justify-content-center gap-3 p-3">
+            {exibirPrincipais ? (
+              <button
+                className="btn btn-secondary px-4 py-2"
+                onClick={() => setExibirPrincipais(false)}
+              >
+                Mostrar Todos
+              </button>
+            ) : (
+              <button
+                className="btn btn-primary px-4 py-2"
+                onClick={() => setExibirPrincipais(true)}
+              >
+                Mostrar Personagens Principais
+              </button>
+            )}
 
             <button
-              className="btn btn-secondary px-4 py-2 me-2 mb-2"
-              onClick={() => setExibirPrincipais(false)}
-            >
-              Mostrar Todos
-            </button>
-
-            <button
-              className={`btn px-4 py-2 me-2 mb-2 ${filtrarFolha ? 'btn-outline-success' : 'btn-success'}`}
+              className={`btn px-4 py-2 ${filtrarFolha ? 'btn-outline-success' : 'btn-success'}`}
               onClick={() => setFiltrarFolha(!filtrarFolha)}
             >
               {filtrarFolha ? "Mostrar Todas as Vilas" : "Mostrar apenas Vila da Folha"}
             </button>
           </div>
-
 
           {personagensFiltrados.map((p) => (
             <div key={p.id} className="col">
