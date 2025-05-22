@@ -1,5 +1,3 @@
-import React from 'react';
-
 function DetalhePersonagem({ personagem, onClick }) {
     return (
         <div className="mx-auto my-4 border border-primary border-3 rounded-3" style={{ maxWidth: '800px' }}>
