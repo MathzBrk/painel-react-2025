@@ -36,7 +36,7 @@ function App() {
           console.error("Erro ao carregar personagens:", err);
         });
     }
-  }, [personagemSelecionado]);
+  }, [personagemSelecionado]); // Personagem Selecionado é o Estado que eu estou observando
 
   // Seleciona personagem e busca detalhes dele
   const handleSelecionarPersonagem = (id) => {
