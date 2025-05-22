@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   // Estados para armazenar dados e controle de UI
@@ -63,7 +64,7 @@ function App() {
     : personagensParaExibir;
 
   return (
-    <div className="container mt-5">
+    <div className="container mx-auto py-4 text-center">
       <h1 className="text-center mb-4 fw-bold">Personagens de Naruto</h1>
 
       {/* Filtros e botões */}
@@ -96,10 +97,10 @@ function App() {
 
           {/* Grid de cards responsiva */}
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-            {personagensFiltrados.map((p) => (
+            {personagensFiltrados.map((p, index) => (
               <div key={p.id} className="col">
                 <div
-                  className="card h-100 shadow-sm"
+                  className={`bg-dark-subtle h-100 shadow-sm border ${index % 4 === 0 ? 'border-primary' : index % 4 === 1 ? 'border-success' : index % 4 === 2 ? 'border-danger' : 'border-warning'} border-2`}
                   role="button"
                   onClick={() => handleSelecionarPersonagem(p.id)}
                   title={`Ver detalhes de ${p.nome}`}
@@ -126,26 +127,33 @@ function App() {
 
       {/* Detalhes do personagem selecionado */}
       {personagemSelecionado && (
-        <div className="card mx-auto my-4" style={{ maxWidth: '600px' }}>
-          <div className="row g-0">
-            <div className="col-md-5">
+        <div className="mx-auto my-4 border border-primary border-3 rounded-3" style={{ maxWidth: '800px' }}>
+          {/* Em telas pequenas, empilha verticalmente; em telas médias+, lado a lado */}
+          <div className="row g-0 bg-dark-subtle">
+            {/* Contêiner da imagem - ocupa toda largura em telas pequenas, 5/12 em médias */}
+            <div className="col-12 col-md-5 d-flex align-items-center justify-content-center p-3">
               <img
                 src={personagemSelecionado.imagem}
                 alt={personagemSelecionado.nome}
-                className="img-fluid rounded-start h-100"
-                style={{ objectFit: 'cover' }}
+                className="img-fluid rounded"
+                style={{
+                  objectFit: 'contain',
+                  maxHeight: '350px',
+                  width: '100%'
+                }}
               />
             </div>
-            <div className="col-md-7 d-flex flex-column">
-              <div className="card-body">
-                <h2 className="card-title">{personagemSelecionado.nome}</h2>
-                <p className="card-text" style={{ textAlign: 'justify' }}>
+            {/* Contêiner do conteúdo - ocupa toda largura em telas pequenas, 7/12 em médias */}
+            <div className="col-12 col-md-7 d-flex flex-column">
+              <div className="card-body bg-dark-subtle">
+                <h2 className="card-title text-center text-md-start">{personagemSelecionado.nome}</h2>
+                <p className="card-text mt-3 p-2" style={{ textAlign: 'justify' }}>
                   {personagemSelecionado.sumario}
                 </p>
               </div>
-              <div className="card-footer bg-transparent border-0 mt-auto text-end">
+              <div className="card-footer bg-transparent border-0 mt-auto text-center">
                 <button
-                  className="btn btn-secondary"
+                  className="btn btn-secondary align-self-center border-2 m-2"
                   onClick={() => setPersonagemSelecionado(null)}
                 >
                   Voltar
