@@ -66,14 +66,13 @@ function App() {
     <div className="container mt-5">
       <h1 className="text-center mb-4 fw-bold">Personagens de Naruto</h1>
 
-      {/* Lista de personagens */}
+      {/* Filtros e botões */}
       {!personagemSelecionado && (
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-          {/* Botões de filtro */}
-          <div className="mb-4 d-flex flex-wrap justify-content-center gap-3 p-3">
+        <>
+          <div className="d-flex flex-wrap justify-content-center gap-3 mb-4">
             {exibirPrincipais ? (
               <button
-                className="btn btn-secondary px-4 py-2"
+                className="btn btn-outline-primary px-4 py-2"
                 onClick={() => setExibirPrincipais(false)}
               >
                 Mostrar Todos
@@ -95,51 +94,70 @@ function App() {
             </button>
           </div>
 
-          {personagensFiltrados.map((p) => (
-            <div key={p.id} className="col">
-              <div
-                className="card h-100 shadow-sm cursor-pointer"
-                role="button"
-                onClick={() => handleSelecionarPersonagem(p.id)}
-                title={`Ver detalhes de ${p.nome}`}
-                style={{ transition: 'transform 0.2s ease-in-out' }}
-                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
-                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-              >
-                <div className="card-body d-flex flex-column">
-                  <h5 className="card-title">{p.nome}</h5>
-                  <p className="card-text mb-1"><strong>Vila:</strong> {p.vila}</p>
-                  <p className="card-text mb-1"><strong>Melhor Jutsu:</strong> {p.jutsuPrincipal}</p>
-                  <p className="card-text mb-1"><strong>Rank:</strong> {p.cargo}</p>
-                  <p className="card-text mb-0"><strong>Poder:</strong> {p.poder}</p>
-                  <div className="mt-auto">
-                    <small className="text-muted">Clique para detalhes</small>
+          {/* Grid de cards responsiva */}
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            {personagensFiltrados.map((p) => (
+              <div key={p.id} className="col">
+                <div
+                  className="card h-100 shadow-sm"
+                  role="button"
+                  onClick={() => handleSelecionarPersonagem(p.id)}
+                  title={`Ver detalhes de ${p.nome}`}
+                  style={{ cursor: 'pointer', transition: 'transform 0.2s ease-in-out' }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                  <div className="card-body d-flex flex-column">
+                    <h5 className="card-title">{p.nome}</h5>
+                    <p className="card-text mb-1"><strong>Vila:</strong> {p.vila}</p>
+                    <p className="card-text mb-1"><strong>Melhor Jutsu:</strong> {p.jutsuPrincipal}</p>
+                    <p className="card-text mb-1"><strong>Rank:</strong> {p.cargo}</p>
+                    <p className="card-text mb-2"><strong>Poder:</strong> {p.poder}</p>
+                    <div className="mt-auto text-end">
+                      <small className="text-muted fst-italic">Clique para detalhes</small>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
 
       {/* Detalhes do personagem selecionado */}
       {personagemSelecionado && (
-        <div className="card mx-auto my-4" style={{ maxWidth: '400px' }}>
-          <img
-            src={personagemSelecionado.imagem}
-            className="card-img-top"
-            alt={personagemSelecionado.nome}
-            style={{ objectFit: 'cover', height: '300px' }}
-          />
-          <div className="card-body text-center">
-            <h2 className="card-title">{personagemSelecionado.nome}</h2>
-            <p className="card-text">{personagemSelecionado.sumario}</p>
-            <button className="btn btn-secondary mt-3" onClick={() => setPersonagemSelecionado(null)}>Voltar</button>
+        <div className="card mx-auto my-4" style={{ maxWidth: '600px' }}>
+          <div className="row g-0">
+            <div className="col-md-5">
+              <img
+                src={personagemSelecionado.imagem}
+                alt={personagemSelecionado.nome}
+                className="img-fluid rounded-start h-100"
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
+            <div className="col-md-7 d-flex flex-column">
+              <div className="card-body">
+                <h2 className="card-title">{personagemSelecionado.nome}</h2>
+                <p className="card-text" style={{ textAlign: 'justify' }}>
+                  {personagemSelecionado.sumario}
+                </p>
+              </div>
+              <div className="card-footer bg-transparent border-0 mt-auto text-end">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setPersonagemSelecionado(null)}
+                >
+                  Voltar
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
     </div>
   );
+
 }
 
 export default App;
