@@ -11,9 +11,13 @@ function App() {
   const [personagemSelecionado, setPersonagemSelecionado] = useState(null);
   const [exibirPrincipais, setExibirPrincipais] = useState(false);
   const [filtrarFolha, setFiltrarFolha] = useState(false);
+  const [filtrarAreia, setFiltrarAreia] = useState(false);
+  const [filtrarNevoa, setFiltrarNevoa] = useState(false);
+
+
 
   // Lista dos nomes para filtrar personagens principais
-  const nomesPersonagensPrincipais = ['naruto', 'sasuke', 'kakashi', 'sakura', 'shikamaru', 'gaara'];
+  const nomesPersonagensPrincipais = ['naruto', 'sasuke', 'kakashi', 'sakura', 'shikamaru', 'gaara', 'madara', 'nagato'];
 
   // Carrega os personagens ao abrir ou quando desmarca personagem selecionado
   useEffect(() => {
@@ -62,14 +66,44 @@ function App() {
   // Decide quais personagens mostrar (principais ou todos)
   const personagensParaExibir = exibirPrincipais ? personagensPrincipaisFiltrados : personagens;
 
-  // Aplica filtro de vila da folha se ativado
-  const personagensFiltrados = filtrarFolha
-    ? personagensParaExibir.filter(p => p.vila.toLowerCase().includes("folha"))
-    : personagensParaExibir;
+  // Personagens filtrados pela vila
+  const personagensDaFolha = personagens.filter((p) => p.vila.toLowerCase().includes("folha"));
+  const personagensDaAreia = personagens.filter((p) => p.vila.toLowerCase().includes("areia"));
+  const personagensDaNevoa = personagens.filter((p) => p.vila.toLowerCase().includes("névoa"));
+
+  let personagensFiltrados = [];
+
+  switch (true) {
+    case filtrarFolha:
+      personagensFiltrados = personagensDaFolha;
+      break;
+    case filtrarAreia:
+      personagensFiltrados = personagensDaAreia;
+      break;
+    case filtrarNevoa:
+      personagensFiltrados = personagensDaNevoa;
+      break;
+    default:
+      personagensFiltrados = personagensParaExibir;
+  }
+
 
   return (
     <div className="container mx-auto py-4 text-center">
       <h1 className="text-center mb-4 fw-bold">Personagens de Naruto</h1>
+
+      {/* Botão de Mostrar Todos e resetar filtros */}
+      <button
+        className="btn btn-secondary mb-3"
+        onClick={() => {
+          setExibirPrincipais(false);
+          setFiltrarFolha(false);
+          setFiltrarAreia(false);
+          setFiltrarNevoa(false);
+        }}
+      >
+        Mostrar Todos
+      </button>
 
       {!personagemSelecionado && (
         <ListaPersonagens
@@ -79,6 +113,10 @@ function App() {
           filtrarFolha={filtrarFolha}
           setFiltrarFolha={setFiltrarFolha}
           handleSelecionarPersonagem={handleSelecionarPersonagem}
+          filtrarAreia={filtrarAreia}
+          setFiltrarAreia={setFiltrarAreia}
+          filtrarNevoa={filtrarNevoa}
+          setFiltrarNevoa={setFiltrarNevoa}
         />
       )}
 

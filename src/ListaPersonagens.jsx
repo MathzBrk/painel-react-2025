@@ -1,5 +1,8 @@
 
-function ListaPersonagens({ personagens, exibirPrincipais, setExibirPrincipais, filtrarFolha, setFiltrarFolha, handleSelecionarPersonagem }) {
+function ListaPersonagens({ personagens, exibirPrincipais, setExibirPrincipais, filtrarFolha, setFiltrarFolha,
+    filtrarAreia, setFiltrarAreia, filtrarNevoa, setFiltrarNevoa,
+    handleSelecionarPersonagem
+}) {
     return (
         <>
             <div className="d-flex flex-wrap justify-content-center gap-3 mb-4">
@@ -23,7 +26,21 @@ function ListaPersonagens({ personagens, exibirPrincipais, setExibirPrincipais, 
                     className={`btn px-4 py-2 ${filtrarFolha ? 'btn-outline-success' : 'btn-success'}`}
                     onClick={() => setFiltrarFolha(!filtrarFolha)}
                 >
-                    {filtrarFolha ? "Mostrar Todas as Vilas" : "Mostrar apenas Vila da Folha"}
+                    Mostrar apenas Vila da Folha
+                </button>
+
+                <button
+                    className={`btn px-4 py-2 ${filtrarAreia ? 'btn-outline-success' : 'btn-success'}`}
+                    onClick={() => setFiltrarAreia(!filtrarAreia)}
+                >
+                    Mostrar apenas Vila da Areia
+                </button>
+
+                <button
+                    className={`btn px-4 py-2 ${filtrarNevoa ? 'btn-outline-success' : 'btn-success'}`}
+                    onClick={() => setFiltrarNevoa(!filtrarNevoa)}
+                >
+                    Mostrar apenas Vila da Nevoa
                 </button>
             </div>
 
